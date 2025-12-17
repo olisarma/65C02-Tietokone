@@ -1,0 +1,22 @@
+## 2025-11-12    12.00 2h Prosessorin logiikka ja reset
+
+Yhdistimme 65C02-prosessorin viime kerralla rakentamaamme kellomoduuliin, jolla tuotettiin prosessorin tarvitsema kellosignaali. 
+65C02 on 8 bittinen prosessori, mikä tarkoittaa että se voi lukea ja kirjoittaa vain 8 bittiä kerrallaan dataväylän kautta(D0-D7). Sen osoiteväylä on 16bittinen(A0-A15). 
+
+Tarkoituksena oli tarkastella prosessorin perustoimintaa ja saada prosessori määrittelemään sille aloitusosoitteen reset-signaalin suorituksen jälkeen. Toiminnan seuraamiseksi yhdistimme prosessorin RWB-pinnin(Read-Write) ja data-ja osoiteväylän Arduino Megaan, jolle olimme kirjoittaneet koodin tapahtumien seuraamiseksi.
+
+### Ennakoitavan datan asettaminen
+
+Jotta saamassamme datassa näkyisi jotain järkevää ja ennakoitavaa, asetimme prosessorin lukemaan NOP-käskyä kytkemällä vastukset prosessorin datapinneihin tiettyyn järjestykseen(löytyy data-lehdestä). Tämän jälkeen nähtiin, kuinka prosessori kirjoitti data-bussiin vain NOP-käskyä(no operation). Tämä näkyi datassa ea, ea, ea... 
+Tämän kutsun avulla saatiin prosessorin osoite ja data-väylä toimimaan odotetummin. Kun dataväylään kirjottui pelkkää ea, niin osoiteväylä alkoi laskea. Tällä mahdollistettiin seuraava vaihe, joka oli prosessorin aloitusosoitteen määritys resetin jälkeen.
+
+
+### Reset-signaalin toiminnan testaus
+
+65C02-prosessorin toiminnan kannalta on tärkeää saada reset-signaali toimimaan, sillä sen avulla se tietää, mistä osoitteesta alkaa lukea dataa käynnistyessään. Ilman reset signaalia, se käyttäytyisi arvaamattomasti. 
+
+Testasimme resetin toimintaa. Resetin vapauttamisen jälkeen prosessori käy läpi 7 kellosignaalia, kunnes sen kuuluisi lukea osoitteesta fffc ja fffd, jotka toimivat aloitus osoitteina ohjelman suorittamiselle.
+
+Meidän prosessorimme ei kirjoittanut reset-signaalia kuin olisi pitänyt. Lopulta ongelma taisi olla prosessorin asettelussa leipälevylle. Se oli joko vähän irti tai sen jalat olivat vähän vääntyneet. 
+
+
