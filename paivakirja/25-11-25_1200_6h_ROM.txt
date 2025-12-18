@@ -1,0 +1,23 @@
+## 2025-11-25    12.00 6h   I/O ohjainpiiri ja ROM
+
+Tämän kerran tavoitteena oli liittää ROM ja I/O-ohjainpiiri 65C02-prosessoriin ja ymmärtää miten prosessori suorittaa ohjelmakoodia ja kommunikoi ohjainpiirin avulla(LEDien vilkutus).
+
+Prosessorin resetin jälkeen, se alkaa lukea käskyjä ennalta määrätystä osoitteesta.
+Jotta käskyjen lukeminen onnistuisi, ohjelmakoodin on oltava muistissa siinä osoitealueessa, johon se resetin jälkeen hyppää.
+
+Tämän takia prosessorin osoitebitti A15 kytkettiin NAND-portin sisääntuloon ja NANDin ulostulo ROM-piirin CE(Chip Enable) -pinniin. Näin A15-signaali saatiin invertoitua ja ROM aktivoitui, kun prosessori osoittaa alueelle 0x8000–0xFFFF.
+
+Tämän jälkeen yhdistimme prosessorin ja ROMin loput osoite-ja data-pinnit keskenään ja ohjelmoimme ROMin suorittamaan samaa NOP-käskyä, kuin aiemmin, mutta nyt vastusten sijaan ohjelma tulee ROMilta. 
+
+TODO: Joku kosketusongelma oli johtojen kanssa, muistaako joku ryhmäläisistä mikä tällä kertaa?
+
+Seuraavana lisättiin logiikka, I/O-ohjainpiirin(65C22) ja prosessorin välille, että voitiin tunnistaa milloin prosessori kirjoittaa ohjainpiirin osoitealueelle. Prosessori yksin osaa vain lukea ja kirjoittaa numeroita muistiin. I/O-ohjainpiiri muuttaa numerot konkreettisiksi asioiksi, kuten LEDien syttymiseksi. 
+
+I/O-ohjainpiirin lisäyksen jälkeen, muutimme koodia siten, että prosessori kirjoittaa dataa ohjainpiirin osoitteisiin(vuorotellen 01010101 ja 10101010, LEDien vikkuminen).
+
+Tämän kerran jälkeen tietokoneen perus logiikka on alkanut hahmottua ja ymmärrän miten konekielen käskyjä voi hakea data-lehdestä. Prosessori suorittaa kokoajan kellon tahdissa lukemista ja kirjoittamista.
+Kun  ROM isketään kiinni, prosessori alkaa suorittaa ROMin ohjelmaa kellon tahdissa. Ohjainpiiri seuraa prosessorin osoiteväylää ja RW-pinniä. Se reagoi vain jos osoite kuuluu sille. Ohjainpiiri tietää osoitteen kuuluvan sille sen perusteella, onko chip select aktiivinen.
+
+I/O-ohjainpiiri reagoi osoitteisiin 0x6000-0x600F
+ROM reagoi ositteisiin 0x8000-0xFFFF
+...
