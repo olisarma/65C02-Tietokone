@@ -1,5 +1,7 @@
 '''
-Tämä tiedosto luo ROM-tiedoston(rom.bin) 65c02-tietokonetta varten.
+Tämä tiedosto luo ROM-tiedoston(rom.bin) 65c02-tietokonetta varten. 
+
+(Konekieltä käsin kirjoitettuna)
 
 Ohjelma alustaa I/O-ohjainpiirin siten, että sen portit ovat ulostuloja.
 Sen jälkeen ohjelma kirjoittaa vuorotellen kahta eri bittikuviota ulostuloon LEDeille.

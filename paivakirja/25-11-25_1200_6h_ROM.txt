@@ -2,6 +2,8 @@
 
 Tämän kerran tavoitteena oli liittää ROM ja I/O-ohjainpiiri 65C02-prosessoriin ja ymmärtää miten prosessori suorittaa ohjelmakoodia ja kommunikoi ohjainpiirin avulla(LEDien vilkutus).
 
+### EEPROM
+
 Prosessorin resetin jälkeen, se alkaa lukea käskyjä ennalta määrätystä osoitteesta.
 Jotta käskyjen lukeminen onnistuisi, ohjelmakoodin on oltava muistissa siinä osoitealueessa, johon se resetin jälkeen hyppää.
 
@@ -10,6 +12,8 @@ Tämän takia prosessorin osoitebitti A15 kytkettiin NAND-portin sisääntuloon 
 Tämän jälkeen yhdistimme prosessorin ja ROMin loput osoite-ja data-pinnit keskenään ja ohjelmoimme ROMin suorittamaan samaa NOP-käskyä, kuin aiemmin, mutta nyt vastusten sijaan ohjelma tulee ROMilta. 
 
 TODO: Joku kosketusongelma oli johtojen kanssa, muistaako joku ryhmäläisistä mikä tällä kertaa?
+
+### I/O-ohjainpiirin lisäys
 
 Seuraavana lisättiin logiikka, I/O-ohjainpiirin(65C22) ja prosessorin välille, että voitiin tunnistaa milloin prosessori kirjoittaa ohjainpiirin osoitealueelle. Prosessori yksin osaa vain lukea ja kirjoittaa numeroita muistiin. I/O-ohjainpiiri muuttaa numerot konkreettisiksi asioiksi, kuten LEDien syttymiseksi. 
 
