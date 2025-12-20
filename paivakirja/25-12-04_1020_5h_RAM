@@ -2,17 +2,31 @@
 
 Tällä kerralla lisäsimme RAMin(AS6C62256) ja korvasimme itse tehdyn kellomoduulin 1mHz oskillaattorilla.
 
-Yhdistimme ROMin ja RAMim osoite-ja datalinjat keskenään, sekä prosessorin RWB-pinnin, RAMin WE#-pinniin(Write Enable).
+### RAM
 
-Tämän jälkeen lisäsimme vielä logiikan prosessorin ja RAMin välille, jotta saatiin CE(chip select) ja OE(output enable) toimimaan oikein.
+Lisäsimme koneeseen RAMin, jotta pystyisimme suorittamaan aliohjelmia. RAMia tarvitaan tähän siksi, koska prosessori käyttää RAMissa olevaa pinoa(stack) muistaakseen mihin kohtaan ohjelmaa pitää palata. Aliohjelmien avulla ohjelmaa saadaan lyhennettyä ja sitä on helpompi laajentaa myöhemmin.
 
-Address decoding -> RAM ja ROM on samassa osoiteavaruudessa, joten niitä ei voi pitää kokoajan aktiivisena samaan aikaan, ettei tule väyläkonfliktia. Tämän takia tarvitaan ositedekoodaus, joka valitsee aina oikean piirin aktiiviseksi.
+Stack on RAMissa, koska sinne kirjoitetaan koko ajan uutta tietoa tai vanhaa tietoa poistetaan, eli sen sisältö muuttuu jatkuvasti. ROM(Read Only Memory) ei sovi tähän, sillä siihen ei voi kirjoittaa.
 
-Logiikalla varmistettiin:
-- että RAM aktivoituu(CE) vain silloin kun CPU osoittaa RAMin alueelle
-- että RAM lukee (OE) vain kun RWB = 1 (read)
-- RAM kirjoittaa (WE#) kun RWB = 0 (write)
+## Logiikka
 
-Testasimme RAMin toimintaa ajamalla uuden koodin, joka kirjoittaa saman teksin näytölle, nyt käyttämällä pinoa(stack). Koodi ei toimisi ilman pinoa.
+Yhdistimme ROMin ja RAMin osoite- ja datalinjat keskenään sekä kytkimme prosessorin RWB-signaalin RAMin WE#-pinniin (Write Enable). Tämän jälkeen CPU:n osoiteväylä (A0–A15) on yhdistetty I/O-ohjainpiiriin, ROMiin ja RAMiin, eli kaikki laitteet ovat samassa osoiteavaruudessa.
 
-Opin pinon toiminnasta.
+Jotta sama osoite ei aktivoisi useampaa piiriä yhtä aikaa, toteutimme osoitedekoodauksen lisäämällä logiikkaa prosessorin ja muistipiirien väliin. Osoitebittejä hyödyntämällä määriteltiin, mikä piiri on aktiivinen kullakin osoitealueella.
+
+-> ROMin CE-signaali kytkettiin siten, että ROM aktivoituu vain silloin, kun osoitebitin A15 arvo on 1. 
+-> RAMin CE-signaali puolestaan aktivoituu vain, kun A15 = 0 ja A14 = 0.
+-> I/O-ohjainpiirin CE-signaali muodostettiin vielä eri osoitebittien yhdistelmästä. Näin varmistettiin, että vain yksi piiri vastaa kerrallaan ja vältetään väyläkonfliktien synty.
+
+
+### Testaus ja pino(stack)
+
+Kun CPU suorittaa aliohjelmakutsun, se hyppää aliohjelmaan ja sen täytyy muistaa, mistä kohtaa se hyppäsi. Paluuosoite tallennetaan muistiin pinoon(stack). Pino sijaitsee RAMissa. Kun aliohjelman suoritus loppuu, CPU hakee osoitteen pinosta ja osaa sitten jatkaa ohjelman suoritusta taas oikeasta kohtaa.
+
+Testasimme RAMin toimintaa ajamalla uuden koodin, joka kirjoittaa saman teksin näytölle, nyt käyttämällä pinoa(stack). Koodi ei toimisi ilman RAMia.
+
+### Oskillaattrorin lisäys
+
+Lisäsimme vielä lopuksi oskillaattorin ja irrotimme vanhan kellomoduulin.
+
+Tämän kerran päätteeksi opin mihin RAMia tarkemmin tarvitaan ja opin tarkemmin pinon toimintaa tietokoneessa. Opin myös tarkemmin mitä osoitedekoodaus tarkoittaa. Vaikka teimme sen jo aeimmin I/O-ohjainpiirin kanssa, niin en tullut ajatelleeksi asiaa tarkemmin, kuin vasta nyt.
