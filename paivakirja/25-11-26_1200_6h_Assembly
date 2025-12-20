@@ -2,3 +2,25 @@
 
 ROM-ohjelman suoritus, I/O-ohjainpiirin käyttö ja näytön liittäminen tietokoneeseen.
 
+Uudelleen ohjelmoimme LEDit vikkumaan vähän eri tavalla nyt Assembly-kielellä.
+
+### Mikä ero on Assembly ja konekielellä?
+
+Konekieli on pelkkiä tavuja esim. heksana A9, 50, 8D, 00, 60...
+Assembly on kieli, joka on tarkoitettu ihmiselle ymmärrettävään ja helposti kirjoitettavaan muotoon. 
+Assembly tarvitsee kääntäjän, jotta prosessori ymmärtää kirjoittamamme ohjelman.
+
+Latasimme vasm-assemblerin kääntämään kirjoittamamme konekielen prosessorille luettavaan muotoon. Kokeilimme käännöksen onnistumista uudella koodilla, joka vilkuttaa ledejä eri tavalla kuin aiempi python-koodi.
+
+### LCD-näyttö ja Hello World
+
+Kiinnitimme LCD-näytön koneeseen VIA- piirin kautta. Leipälevyllä oli tilan puutetta ja jätimme kontrastisäätimen kiinnittämisen välistä, koska koimme ettei se ole niin tärkeä koneen toiminnan kannalta.
+
+Kirjoitimme uuden koodin, jolla saatiin näytölle kirjoitettua teksti "Hello World!" .
+
+Ohjelman kirjoituksessa tärkeää oli huomata Enable-pulssin merkitys. Jokaisen merkin kirjoittamisen jälkeen täytyy lähettää Enable-pulssi, että näyttö rekisteröi uuden merkin. CPU on nopeampi kuin LCD-näyttö, joten ilman Enable-pulssia näyttö ei ehdi rekisteröidä uutta merkkiä ennen kuin CPU lähettää seuraavan.
+
+LCD-näytössä on osoite-rekisteri ja data-rekisteri.
+
+Tällä kerralla ymmärsin paremmin kuinka Assembly liittyy konekieleen ja Enable-pulssin toimintaa.
+
