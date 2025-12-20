@@ -1,0 +1,18 @@
+## 25-12-04   10.20 5h 20min RAM ja oskillaattori
+
+Tällä kerralla lisäsimme RAMin(AS6C62256) ja korvasimme itse tehdyn kellomoduulin 1mHz oskillaattorilla.
+
+Yhdistimme ROMin ja RAMim osoite-ja datalinjat keskenään, sekä prosessorin RWB-pinnin, RAMin WE#-pinniin(Write Enable).
+
+Tämän jälkeen lisäsimme vielä logiikan prosessorin ja RAMin välille, jotta saatiin CE(chip select) ja OE(output enable) toimimaan oikein.
+
+Address decoding -> RAM ja ROM on samassa osoiteavaruudessa, joten niitä ei voi pitää kokoajan aktiivisena samaan aikaan, ettei tule väyläkonfliktia. Tämän takia tarvitaan ositedekoodaus, joka valitsee aina oikean piirin aktiiviseksi.
+
+Logiikalla varmistettiin:
+- että RAM aktivoituu(CE) vain silloin kun CPU osoittaa RAMin alueelle
+- että RAM lukee (OE) vain kun RWB = 1 (read)
+- RAM kirjoittaa (WE#) kun RWB = 0 (write)
+
+Testasimme RAMin toimintaa ajamalla uuden koodin, joka kirjoittaa saman teksin näytölle, nyt käyttämällä pinoa(stack). Koodi ei toimisi ilman pinoa.
+
+Opin pinon toiminnasta.
