@@ -1,4 +1,7 @@
 # 65C02-Tietokone
+
+![65C02-leipälevytietokone](images/Hello_World.jpeg)
+
 Leipälevylle rakennettu Ben Eaterin materiaaleihin perustuva 65C02-tietokone, tietokoneen perusrakenteen ja toiminnan oppimiseen.
 
 Repositorio sisältää myös oppimispäiväkirjani(project_log), joka sisältää kronologisesti oppimisprosessini konetta rakentaessa. Oppimispäiväkirja sisältää myös virheitä, ongelmia ja keskeneräisiä kohtia, jotka ovat osa oppimisprosessia ja sikis mukana dokumentaatiossa.
