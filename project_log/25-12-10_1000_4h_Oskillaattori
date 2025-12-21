@@ -1,0 +1,23 @@
+## 25-12-10 Oskillaattori ja ohjelmisto
+
+Tällä kerralla lisäsimme oskillaattorin ja korjasimme ohjelmakoodia sille sopivaan muotoon. Aktivoimme koodista myös laitteistokeskeytykset (hardware interrupt). Kekseytyksiä havainnollistettiin napin painalluksen havaitsemiseen, jolloin keskeytysrutiinissa kasvatettiin laskuria ja estettiin kytkimen pompahduksista aiheutuvia virheellisiä keskeytyksiä.
+
+### Oskillaattori
+
+Lisäsimme oskillaattorin kelloon ja huomasimme, ettei Hello world-ohjelmamme enää tominut nykyisellä koodilla. Ymmärsin että se johtuu siitä, että meiltä puuttui vielä busy flagin tarkastus koodista.
+
+Opin tästä että busy flag tarkoittaa yhtä bittiä, joka luetaan laitteelta ja sen arvo kertoo onko laite kiireinen tai valmis jatkamaan. Kun busy flag on 0, se on valmis ottamaan vastaan uuden komennon, mutta jos se on 1, laite on vielä kiireinen.
+
+Lisäsimme busy flagin tarkastuksen koodiin ja saimme ohjelman taas toimimaan.
+
+### Binääristä desimaaliin
+
+Mallinsimme koodilla binäärisestä arvosta desimaalisen muodostamista ohjelmallisesti. Tässä kohtaa törmäsimme ongelmaan, koska koneemme lakkasi toimimasta. Numerot hyppivät edestakaisin näytöllä ja olivat aivan liian suuria. Saimme lopulta selville, että prosessorin ja ohjainpiirin väliset johdot eivät pysyneet kunnolla kiinni ja päätimme vaihtaa ne. Tämän jälkeen ohjelma toimi odotetusti.
+
+### Laitteistokeskeytykset (hardware interrupts)
+
+Keskeytysten avulla prosessori voi reagoida ulkopuolisiin tapahtumiin ilman aktiivista tarkistamista.
+
+### Keskeytysten käsittely (interrupt handling)
+
+Laitteistokeskeytyksen käsittelyssä prosessori tallentaa nykyisen tilansa, siirtyy keskeytysrutiiniin ja lopuksi palaa takaisin keskeytyneeseen ohjelmaan. Tämä muistuttaa aliohjelmakutsun toimintaa, mutta on laitteiston ohjaama. Tässäkin RAM on keskeisessä roolissa.
